@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+{% block title %}Nouvelle facture — Trustia{% endblock %}
+{% block content %}
+<h1 class="h3 mb-3">Nouvelle facture</h1>
+<p class="text-muted">Ajoutez une ou plusieurs lignes (produit et quantité). La date est enregistrée automatiquement.</p>
+<form method="post" novalidate>
+  {% csrf_token %}
+  {{ formset.management_form }}
+  {% if formset.non_form_errors %}
+    <div class="alert alert-danger">{{ formset.non_form_errors }}</div>
+  {% endif %}
+  <div class="table-responsive">
+    <table class="table table-bordered bg-white">
+      <thead class="table-light">
+        <tr>
+          <th>Produit</th>
+          <th style="width: 8rem">Quantité</th>
+          <th style="width: 4rem">Suppr.</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for form in formset %}
+          <tr>
+            {% for hidden in form.hidden_fields %}{{ hidden }}{% endfor %}
+            <td>
+              {{ form.product }}
+              {% if form.product.errors %}<div class="text-danger small">{{ form.product.errors }}</div>{% endif %}
+            </td>
+            <td>
+              {{ form.quantity }}
+              {% if form.quantity.errors %}<div class="text-danger small">{{ form.quantity.errors }}</div>{% endif %}
+            </td>
+            <td class="text-center align-middle">
+              {% if form.DELETE %}{{ form.DELETE }}{% endif %}
+            </td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+  <button type="submit" class="btn btn-primary">Créer la facture</button>
+  <a class="btn btn-outline-secondary" href="{% url 'invoice_list' %}">Annuler</a>
+</form>
+{% endblock %}

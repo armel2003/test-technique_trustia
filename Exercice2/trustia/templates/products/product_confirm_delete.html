@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+{% block title %}Supprimer le produit — Trustia{% endblock %}
+{% block content %}
+<h1 class="h3 mb-3">Supprimer le produit</h1>
+<p>Confirmer la suppression de <strong>{{ product.nom }}</strong> ?</p>
+<form method="post">
+  {% csrf_token %}
+  <button type="submit" class="btn btn-danger">Supprimer</button>
+  <a class="btn btn-outline-secondary" href="{% url 'product_list' %}">Annuler</a>
+</form>
+{% endblock %}
